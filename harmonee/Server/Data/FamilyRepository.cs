@@ -1,53 +1,86 @@
-﻿using harmonee.Server.Data;
-using harmonee.Shared.Family;
+﻿using harmonee.Shared.Family;
+using Microsoft.EntityFrameworkCore;
 
-namespace harmonee.Server
+namespace harmonee.Server.Data
 {
     public class FamilyRepository : IRepository<Family>
     {
+        private readonly FamilyContext _context;
+
+        public FamilyRepository(FamilyContext context)
+        {
+            _context = context;
+        }
+
         public Family Add(Family entity)
         {
-            throw new NotImplementedException();
+            _context.Families.Add(entity);
+            _context.SaveChanges();
+            return entity;
         }
 
         public IEnumerable<Family> AddMany(IEnumerable<Family> entities)
         {
-            throw new NotImplementedException();
+            foreach (var family in entities)
+            {
+                _context.Families.Add(family);
+            }
+            _context.SaveChanges();
+            return entities;
         }
 
         public bool Delete(Guid id)
         {
-            throw new NotImplementedException();
+            _context.Families.Remove(GetById(id));
+            _context.SaveChanges();
+            return true;
         }
 
         public bool DeleteMany(IEnumerable<Guid> ids)
         {
-            throw new NotImplementedException();
+            var familiesToRemove = _context.Families.Where(f => ids.Contains(f.Id));
+            _context.Families.RemoveRange(familiesToRemove);
+            _context.SaveChanges();
+            return true;
         }
 
         public IEnumerable<Family> GetAll()
         {
-            throw new NotImplementedException();
+            return _context.Families.ToList();
         }
 
-        public Family GetById(Guid id)
+        public Family? GetById(Guid id)
         {
-            throw new NotImplementedException();
+            return _context.Families.FirstOrDefault(f => f.Id == id);
         }
 
         public IEnumerable<Family> GetMany(IEnumerable<Guid> ids)
         {
-            throw new NotImplementedException();
+            return _context.Families.Where(f => ids.Contains(f.Id));
         }
 
         public bool Update(Family entity)
         {
-            throw new NotImplementedException();
+            _context.Families.Update(entity);
+            _context.SaveChanges();
+            return true;
         }
 
         public bool UpdateMany(IEnumerable<Family> entities)
         {
-            throw new NotImplementedException();
+            _context.Families.UpdateRange(entities);
+            _context.SaveChanges();
+            return true;
+        }
+    }
+
+    public class FamilyContext : DbContext
+    {
+        public DbSet<Family> Families { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            // Use appropriate server and connection string
         }
     }
 }
