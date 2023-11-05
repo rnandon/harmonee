@@ -77,10 +77,17 @@ namespace harmonee.Server.Data
     public class FamilyContext : DbContext
     {
         public DbSet<Family> Families { get; set; }
+        private readonly string _connectionString;
+
+        public FamilyContext(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // Use appropriate server and connection string
+            optionsBuilder.UseSqlServer(_connectionString);
         }
     }
 }

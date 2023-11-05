@@ -2,6 +2,6 @@
 {
     public abstract class Storable
     {
-        Guid Id;
+        public Guid Id;
     }
 }
