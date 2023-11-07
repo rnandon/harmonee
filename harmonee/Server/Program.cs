@@ -1,6 +1,4 @@
 using harmonee.Server.Data;
-using harmonee.Shared.Family;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 
 namespace harmonee
@@ -16,16 +14,7 @@ namespace harmonee
             builder.Services.AddRazorPages();
 
             var options = new DbContextOptionsBuilder();
-            var familyConnectionString = builder.Configuration.GetConnectionString("Family");
-            builder.Services.AddScoped(_ => new FamilyContext(familyConnectionString));
-            builder.Services.AddScoped(_ => new FamilyMemberContext(familyConnectionString));
-            builder.Services.AddScoped(_ => new FamilyListContext(familyConnectionString));
-            builder.Services.AddScoped(_ => new FamilyEventContext(familyConnectionString));
-
-            //builder.Services.AddDbContext<FamilyContext>();
-            //builder.Services.AddDbContext<FamilyContext>();
-            //builder.Services.AddDbContext<FamilyContext>();
-            //builder.Services.AddDbContext<FamilyContext>();
+            builder.Services.AddScoped(_ => new FamilyContext(builder.Configuration.GetConnectionString("Family")));
 
             var app = builder.Build();
 
