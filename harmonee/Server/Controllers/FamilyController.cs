@@ -1,4 +1,5 @@
 ﻿using harmonee.Server.Data;
+using harmonee.Shared.Data;
 using harmonee.Shared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,22 +10,11 @@ namespace harmonee.Server.Controllers
     [ApiController]
     public class FamilyController : ControllerBase
     {
-        private readonly FamilyRepository _familyRepo;
-        private readonly FamilyMemberRepository _familyMemberRepo;
-        private readonly FamilyEventRepository _familyEventRepo;
-        private readonly FamilyListRepository _familyListRepo;
+        private readonly IFamilyRepository _familyRepository;
 
-        public FamilyController(
-            FamilyRepository familyRepo,
-            FamilyMemberRepository familyMemberRepo,
-            FamilyEventRepository familyEventRepo,
-            FamilyListRepository familyListRepo
-        )
+        public FamilyController(IFamilyRepository familyRepository)
         {
-            _familyRepo = familyRepo;
-            _familyMemberRepo = familyMemberRepo;
-            _familyEventRepo = familyEventRepo;
-            _familyListRepo = familyListRepo;
+            _familyRepository = familyRepository;
         }
 
         [HttpPost]
@@ -35,7 +25,7 @@ namespace harmonee.Server.Controllers
                 BadRequest(errors);
             }
 
-            return _familyRepo.Add(model);
+            return _familyRepository.Add(model);
         } 
     }
 }
