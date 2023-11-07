@@ -1,4 +1,4 @@
-﻿using harmonee.Shared.Family;
+﻿using harmonee.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace harmonee.Server.Data

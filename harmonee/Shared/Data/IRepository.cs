@@ -1,6 +1,6 @@
-﻿namespace harmonee.Server.Data
+﻿namespace harmonee.Shared.Data
 {
-    public interface IRepository<T> where T : Storable
+    public interface IRepository<T>
     {
         public T GetById(Guid id);
         public IEnumerable<T> GetMany(IEnumerable<Guid> ids);
