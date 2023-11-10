@@ -64,9 +64,14 @@ namespace harmonee.Server.Data
                 _context.FamilyEvents.RemoveRange(familyEventsToRemove);
                 _context.FamilyLists.RemoveRange(familyListsToRemove);
             }
-            _context.Families.RemoveRange(familiesToRemove);
-            _context.SaveChanges();
-            return true;
+            if (familiesToRemove.Count() > 0)
+            {
+                _context.Families.RemoveRange(familiesToRemove);
+                _context.SaveChanges(); 
+                return true;
+            }
+
+            return false;
         }
 
         public IEnumerable<Family> GetAll()

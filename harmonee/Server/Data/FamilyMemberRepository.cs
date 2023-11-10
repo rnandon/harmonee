@@ -1,9 +1,10 @@
-﻿using harmonee.Shared.Models;
+﻿using harmonee.Shared.Family;
+using harmonee.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace harmonee.Server.Data
 {
-    public class FamilyMemberRepository : IRepository<FamilyMember>
+    public class FamilyMemberRepository : IFamilyMemberRepository
     {
         private readonly FamilyMemberContext _context;
 
@@ -12,36 +13,69 @@ namespace harmonee.Server.Data
             _context = context;
         }
 
-        public FamilyMember Add(FamilyMember entity)
+        public bool Add(FamilyMember entity)
         {
-            _context.FamilyMembers.Add(entity);
-            _context.SaveChanges();
-            return entity;
+            if (!_context.FamilyMembers.Any(fm => fm.FamilyId ==  entity.FamilyId && fm.UserId == entity.UserId))
+            {
+                _context.FamilyMembers.Add(entity);
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
         }
 
         public IEnumerable<FamilyMember> AddMany(IEnumerable<FamilyMember> entities)
         {
-            foreach (var family in entities)
+            var contextChanged = false;
+            foreach (var familyMember in entities)
             {
-                _context.FamilyMembers.Add(family);
+                var existingMember = _context.FamilyMembers.FirstOrDefault(fm => fm.FamilyId == familyMember.FamilyId && fm.UserId == familyMember.UserId);
+                if (existingMember is null)
+                {
+                    _context.FamilyMembers.Add(familyMember);
+                    contextChanged = true;
+                }
             }
-            _context.SaveChanges();
+
+            if (contextChanged)
+            {
+                _context.SaveChanges();
+            }
+
             return entities;
         }
 
-        public bool Delete(Guid id)
+        public bool Delete(FamilyMember familyMember)
         {
-            _context.FamilyMembers.Remove(GetById(id));
+            var existingMember = _context.FamilyMembers.FirstOrDefault(fm => fm.FamilyId == familyMember.FamilyId && fm.UserId == familyMember.UserId);
+            if (existingMember is null)
+            {
+                return false;
+            }
+            _context.FamilyMembers.Remove(existingMember);
             _context.SaveChanges();
             return true;
         }
 
-        public bool DeleteMany(IEnumerable<Guid> ids)
+        public bool DeleteMany(IEnumerable<FamilyMember> familyMembers)
         {
-            var familiesToRemove = _context.FamilyMembers.Where(f => ids.Contains(f.Id));
-            _context.FamilyMembers.RemoveRange(familiesToRemove);
-            _context.SaveChanges();
-            return true;
+            var contextChanged = false;
+            foreach (var member in familyMembers)
+            {
+                var existingMember = _context.FamilyMembers.FirstOrDefault(fm => fm.FamilyId == member.FamilyId && fm.UserId == member.UserId);
+                if (existingMember is not null)
+                {
+                    _context.FamilyMembers.Remove(existingMember);
+                    contextChanged = true;
+                }
+            }
+
+            if (contextChanged)
+            {
+                _context.SaveChanges();
+            }
+
+            return contextChanged;
         }
 
         public IEnumerable<FamilyMember> GetAll()
@@ -49,28 +83,19 @@ namespace harmonee.Server.Data
             return _context.FamilyMembers.ToList();
         }
 
-        public FamilyMember? GetById(Guid id)
+        public FamilyMember? GetById(Guid userId, Guid familyId)
         {
-            return _context.FamilyMembers.FirstOrDefault(f => f.Id == id);
+            return _context.FamilyMembers.FirstOrDefault(f => f.UserId == userId && f.FamilyId == familyId);
         }
 
-        public IEnumerable<FamilyMember> GetMany(IEnumerable<Guid> ids)
+        public IEnumerable<FamilyMember> GetByFamilyId(Guid familyId)
         {
-            return _context.FamilyMembers.Where(f => ids.Contains(f.Id));
+            return _context.FamilyMembers.Where(f => f.FamilyId == familyId);
         }
 
-        public bool Update(FamilyMember entity)
+        public IEnumerable<FamilyMember> GetByUserId(Guid userId)
         {
-            _context.FamilyMembers.Update(entity);
-            _context.SaveChanges();
-            return true;
-        }
-
-        public bool UpdateMany(IEnumerable<FamilyMember> entities)
-        {
-            _context.FamilyMembers.UpdateRange(entities);
-            _context.SaveChanges();
-            return true;
+            return _context.FamilyMembers.Where(f => f.UserId == userId);
         }
     }
 
