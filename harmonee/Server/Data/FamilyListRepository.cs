@@ -51,7 +51,7 @@ namespace harmonee.Server.Data
             var existingFamilyList = _context.FamilyLists.FirstOrDefault(fl => fl.Id == id);
             if (existingFamilyList is not null)
             {
-                _context.FamilyLists.Remove(GetById(id));
+                _context.FamilyLists.Remove(existingFamilyList);
                 _context.SaveChanges();
                 return true;    
             }
