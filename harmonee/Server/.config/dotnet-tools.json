@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "microsoft.dotnet-msidentity": {
+<<<<<<<< HEAD:harmonee/Server/.config/dotnet-tools.json
+      "version": "2.0.6",
+========
+      "version": "1.0.1",
+>>>>>>>> 68b8e9c (Init):harmonee/harmonee/.config/dotnet-tools.json
+      "commands": [
+        "dotnet-msidentity"
+      ]
+    }
+  }
+}

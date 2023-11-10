@@ -2,7 +2,7 @@
 
 namespace harmonee.Shared.Data
 {
-    public interface IFamilyRepository : IRepository<Family>
+    public interface IFamilyRepository : IRepository<Models.Family>
     {
         public Models.Family Add(Models.Family entity);
         public IEnumerable<Models.Family> AddMany(IEnumerable<Models.Family> entities);
