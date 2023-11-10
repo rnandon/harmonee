@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace harmonee.Server.Data
 {
-    public class FamilyEventRepository : IRepository<FamilyEvent>
+    public class FamilyEventRepository //: IFamilyEventRepository
     {
         private readonly FamilyEventContext _context;
 
@@ -12,34 +12,61 @@ namespace harmonee.Server.Data
             _context = context;
         }
 
-        public FamilyEvent Add(FamilyEvent entity)
+        public bool Add(FamilyEvent entity)
         {
-            _context.FamilyEvents.Add(entity);
-            _context.SaveChanges();
-            return entity;
-        }
-
-        public IEnumerable<FamilyEvent> AddMany(IEnumerable<FamilyEvent> entities)
-        {
-            foreach (var family in entities)
+            var existingRecord = _context.FamilyEvents.FirstOrDefault(fe =>  fe.Id == entity.Id);
+            if (existingRecord is not null)
             {
-                _context.FamilyEvents.Add(family);
+                return false;
             }
-            _context.SaveChanges();
-            return entities;
-        }
 
-        public bool Delete(Guid id)
-        {
-            _context.FamilyEvents.Remove(GetById(id));
+            _context.FamilyEvents.Add(entity);
             _context.SaveChanges();
             return true;
         }
 
+        public bool AddMany(IEnumerable<FamilyEvent> entities)
+        {
+            var contextChanged = false;
+            foreach (var incomingEvent in entities)
+            {
+                var existingRecord = _context.FamilyEvents.FirstOrDefault(fe => fe.Id == incomingEvent.Id);
+                if (existingRecord is null)
+                {
+                    _context.FamilyEvents.Add(incomingEvent);
+                }
+            }
+
+            if (contextChanged)
+            {
+                _context.SaveChanges(); 
+            }
+
+            return contextChanged;
+        }
+
+        public bool Delete(Guid id)
+        {
+            var existingRecord = _context.FamilyEvents.FirstOrDefault(fe => fe.Id == id);
+            if (existingRecord is not null)
+            {
+                _context.FamilyEvents.Remove(existingRecord);
+                _context.SaveChanges();
+                return true;
+            }
+
+            return false;
+        }
+
         public bool DeleteMany(IEnumerable<Guid> ids)
         {
-            var familiesToRemove = _context.FamilyEvents.Where(f => ids.Contains(f.Id));
-            _context.FamilyEvents.RemoveRange(familiesToRemove);
+            var existingEvents = _context.FamilyEvents.Where(f => ids.Contains(f.Id));
+            if (existingEvents.Count() == 0)
+            {
+                return false;
+            }
+
+            _context.FamilyEvents.RemoveRange(existingEvents);
             _context.SaveChanges();
             return true;
         }
@@ -61,6 +88,17 @@ namespace harmonee.Server.Data
 
         public bool Update(FamilyEvent entity)
         {
+            var existingEvent = _context.FamilyEvents.FirstOrDefault(fe => fe.Id == entity.Id);
+            if (existingEvent is null)
+            {
+                return false;
+            }
+
+            if (existingEvent.Equals(entity))
+            {
+                return false;
+            }
+
             _context.FamilyEvents.Update(entity);
             _context.SaveChanges();
             return true;
@@ -68,9 +106,30 @@ namespace harmonee.Server.Data
 
         public bool UpdateMany(IEnumerable<FamilyEvent> entities)
         {
-            _context.FamilyEvents.UpdateRange(entities);
-            _context.SaveChanges();
-            return true;
+            var contextChanged = false;
+            foreach (var incomingEvent in entities)
+            {
+                var existingEvent = _context.FamilyEvents.FirstOrDefault(fe => fe.Id == incomingEvent.Id);
+                if (existingEvent is null)
+                {
+                    continue;
+                }
+
+                if (existingEvent.Equals(incomingEvent))
+                {
+                    continue;
+                }
+
+                _context.FamilyEvents.Update(incomingEvent);
+                contextChanged = true;
+            }
+
+            if (contextChanged)
+            {
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
         }
     }
 
@@ -88,7 +147,6 @@ namespace harmonee.Server.Data
         {
             // Use appropriate server and connection string
             optionsBuilder.UseSqlServer(_connectionString);
-
         }
     }
 }
