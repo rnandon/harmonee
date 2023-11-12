@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace harmonee.Server.Data
 {
-    public class FamilyEventRepository //: IFamilyEventRepository
+    public class FamilyEventRepository : IFamilyEventRepository
     {
         private readonly FamilyEventContext _context;
 

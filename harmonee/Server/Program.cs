@@ -1,4 +1,5 @@
 using harmonee.Server.Data;
+using harmonee.Shared.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace harmonee
@@ -14,7 +15,15 @@ namespace harmonee
             builder.Services.AddRazorPages();
 
             var options = new DbContextOptionsBuilder();
-            builder.Services.AddScoped(_ => new FamilyContext(builder.Configuration.GetConnectionString("Family")));
+            var familyConnectionString = builder.Configuration.GetConnectionString("Family");
+            builder.Services.AddScoped(_ => new FamilyContext(familyConnectionString));
+            builder.Services.AddScoped(_ => new FamilyMemberContext(familyConnectionString));
+            builder.Services.AddScoped(_ => new FamilyEventContext(familyConnectionString));
+            builder.Services.AddScoped(_ => new FamilyListContext(familyConnectionString));
+            builder.Services.AddScoped<IFamilyRepository, FamilyRepository>();
+            builder.Services.AddScoped<IFamilyMemberRepository, FamilyMemberRepository>();
+            builder.Services.AddScoped<IFamilyEventRepository, FamilyEventRepository>();
+            builder.Services.AddScoped<IFamilyListRepository, FamilyListRepository>();
 
             var app = builder.Build();
 
