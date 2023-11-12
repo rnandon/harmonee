@@ -17,8 +17,20 @@ namespace harmonee.Server.Controllers
             _familyRepository = familyRepository;
         }
 
+        [HttpGet("{id}")]
+        public Family GetFamily(Guid id)
+        {
+            var family = _familyRepository.GetById(id);
+            if (family is null)
+            {
+                NotFound();
+            }
+
+            return family;
+        }
+
         [HttpPost]
-        public Family? CreateNewFamily(Family model)
+        public Family? CreateNewFamily([FromBody] Family model)
         {
             if (!model.IsValid(out var errors))
             {
@@ -26,6 +38,23 @@ namespace harmonee.Server.Controllers
             }
 
             return _familyRepository.Add(model);
-        } 
+        }
+
+        [HttpPut]
+        public bool UpdateFamily([FromBody] Family model)
+        {
+            if (!model.IsValid(out var errors))
+            {
+                BadRequest(errors);
+            }
+
+            return _familyRepository.Update(model);
+        }
+
+        [HttpDelete]
+        public bool DeleteFamily(Guid id) 
+        {
+            return _familyRepository.Delete(id);
+        }
     }
 }
