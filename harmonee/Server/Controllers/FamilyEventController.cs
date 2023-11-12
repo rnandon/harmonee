@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using harmonee.Server.Data;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace harmonee.Server.Controllers
@@ -7,5 +8,11 @@ namespace harmonee.Server.Controllers
     [ApiController]
     public class FamilyEventController : ControllerBase
     {
+        private readonly IFamilyEventRepository _repository;
+
+        public FamilyEventController(IFamilyEventRepository repository)
+        {
+            _repository = repository;
+        }
     }
 }

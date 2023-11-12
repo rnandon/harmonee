@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using harmonee.Server.Data;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace harmonee.Server.Controllers
@@ -7,5 +8,11 @@ namespace harmonee.Server.Controllers
     [ApiController]
     public class FamilyListController : ControllerBase
     {
+        private readonly IFamilyListRepository _repository;
+
+        public FamilyListController(IFamilyListRepository repository)
+        {
+            _repository = repository;
+        }
     }
 }
