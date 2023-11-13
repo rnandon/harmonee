@@ -57,6 +57,18 @@ namespace harmonee.Server.Data
             return true;
         }
 
+        public bool Delete(Guid userId, Guid familyId)
+        {
+            var existingMember = _context.FamilyMembers.FirstOrDefault(fm => fm.UserId == userId && fm.FamilyId == familyId);
+            if (existingMember is null)
+            {
+                return false;
+            }
+            _context.FamilyMembers.Remove(existingMember);
+            _context.SaveChanges();
+            return true;
+        }
+
         public bool DeleteMany(IEnumerable<FamilyMember> familyMembers)
         {
             var contextChanged = false;
