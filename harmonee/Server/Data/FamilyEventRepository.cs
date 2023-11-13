@@ -76,6 +76,11 @@ namespace harmonee.Server.Data
             return _context.FamilyEvents.ToList();
         }
 
+        public IEnumerable<FamilyEvent> GetByFamily(Guid familyId)
+        {
+            return _context.FamilyEvents.Where(fe => fe.FamilyId == familyId);
+        }
+
         public FamilyEvent? GetById(Guid id)
         {
             return _context.FamilyEvents.FirstOrDefault(f => f.Id == id);
