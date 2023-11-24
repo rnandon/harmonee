@@ -16,7 +16,7 @@ namespace harmonee.Server.Controllers
             _repository = repository;
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public FamilyEvent? Get([FromRoute] Guid id)
         {
             return _repository.GetById(id);
@@ -35,7 +35,7 @@ namespace harmonee.Server.Controllers
         }
 
         [HttpPost]
-        public bool Create(FamilyEvent familyEvent)
+        public bool Create([FromBody] FamilyEvent familyEvent)
         {
             if (!familyEvent.IsValid(out var errors))
             {
@@ -46,7 +46,7 @@ namespace harmonee.Server.Controllers
         }
 
         [HttpPut]
-        public bool Update(FamilyEvent familyEvent)
+        public bool Update([FromBody] FamilyEvent familyEvent)
         {
             if (!familyEvent.IsValid(out var errors, true))
             {
@@ -56,7 +56,7 @@ namespace harmonee.Server.Controllers
             return _repository.Update(familyEvent);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public bool Delete(Guid id)
         {
             return _repository.Delete(id);

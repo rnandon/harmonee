@@ -1,0 +1,61 @@
+﻿@page "/familyDebug"
+@using harmonee.Shared
+@using harmonee.Client.Services
+@using harmonee.Shared.Models
+@inject IFamilyService _familyService
+@inject IFamilyListService _familyListService
+@inject IFamilyMemberService _familyMemberService
+@inject IFamilyEventService _familyEventService
+
+<h3>FamilyDebug</h3>
+
+
+
+@code {
+	private Guid FamilyId = Guid.Parse("");
+	private Family Family = new();
+	private List<FamilyEvent> Events = new();
+	private List<FamilyList> Lists = new();
+	private List<FamilyMember> Members = new();
+
+	protected override async Task OnInitializedAsync()
+	{
+		var family = await _familyService.GetFamily(FamilyId);
+		if (Family is not null)
+		{
+			Family = family;
+			var eventsTask = GetEventsAsync();
+			var listsTask = GetListsAsync();
+			var membersTask = GetMembersAsync();
+
+			await Task.WhenAll(eventsTask, listsTask, membersTask);
+		}
+	}
+
+	private async Task GetEventsAsync()
+	{
+		var events = await _familyEventService.GetByFamilyId(FamilyId);
+		if (events is not null)
+		{
+			Events = events.ToList();
+		}
+	}
+
+	private async Task GetListsAsync()
+	{
+		var lists = await _familyListService.GetByFamilyId(FamilyId);
+		if (lists is not null)
+		{
+			Lists = lists.ToList();
+		}
+	}
+
+	private async Task GetMembersAsync()
+	{
+		var members = await _familyMemberService.GetByFamilyId(FamilyId);
+		if (members is not null)
+		{
+			Members = members.ToList();
+		}
+	}
+}

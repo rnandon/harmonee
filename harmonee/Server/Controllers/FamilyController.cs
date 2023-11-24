@@ -51,7 +51,7 @@ namespace harmonee.Server.Controllers
             return _familyRepository.Update(model);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public bool DeleteFamily(Guid id) 
         {
             return _familyRepository.Delete(id);
