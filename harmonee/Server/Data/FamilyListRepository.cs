@@ -5,9 +5,9 @@ namespace harmonee.Server.Data
 {
     public class FamilyListRepository : IFamilyListRepository
     {
-        private readonly FamilyListContext _context;
+        private readonly FamilyContext _context;
 
-        public FamilyListRepository(FamilyListContext context)
+        public FamilyListRepository(FamilyContext context)
         {
             _context = context;
         }
@@ -131,23 +131,6 @@ namespace harmonee.Server.Data
             }
 
             return contextChanged;
-        }
-    }
-
-    public class FamilyListContext : DbContext
-    {
-        public DbSet<FamilyList> FamilyLists { get; set; }
-        private readonly string _connectionString;
-
-        public FamilyListContext(string connectionString)
-        {
-            _connectionString = connectionString;
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            // Use appropriate server and connection string
-            optionsBuilder.UseSqlServer(_connectionString);
         }
     }
 }

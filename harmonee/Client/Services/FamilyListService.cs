@@ -2,7 +2,7 @@
 
 namespace harmonee.Client.Services
 {
-	public class FamilyListService
+	public class FamilyListService : IFamilyListService
 	{
 		private readonly IApiClient _client;
 

@@ -3,25 +3,49 @@
 @using harmonee.Client.Services
 @using harmonee.Shared.Models
 @inject IFamilyService _familyService
-@inject IFamilyListService _familyListService
-@inject IFamilyMemberService _familyMemberService
-@inject IFamilyEventService _familyEventService
+@inject IFamilyMemberService _familyMemberService;
+@inject IFamilyEventService _familyEventService;
+@inject IFamilyListService _familyListService;
 
-<h3>FamilyDebug</h3>
+<h3>Family Debug</h3>
 
+<h4>Family Created: @FamilyCreated</h4>
 
+@if (Family is null)
+{
+	<h4>Family not loaded.</h4>
+	<button @onclick="ShowCreateFamilyForm">Create New Family</button>
+
+	<InputText @bind-Value="FamilyIdRaw" />
+	<button @onclick="GetFamily">Get Family By Id</button>
+}
+else {
+	<h4>Family ID:</h4>
+	<p>@Family.Id</p>
+	<h4>Family Name: </h4>
+	<p>@Family.Name</p>
+}
+
+@if (CreateFamilyFormVisible)
+{
+	// Form to create a new family
+	<harmonee.Client.Components.CreateFamilyForm OnFormSubmit="GetFamilyFromForm"/>
+}
 
 @code {
-	private Guid FamilyId = Guid.Parse("");
-	private Family Family = new();
-	private List<FamilyEvent> Events = new();
-	private List<FamilyList> Lists = new();
-	private List<FamilyMember> Members = new();
+	bool CreateFamilyFormVisible = false;
+	bool FamilyCreated = false;
+	string FamilyIdRaw = string.Empty;
 
 	protected override async Task OnInitializedAsync()
 	{
-		var family = await _familyService.GetFamily(FamilyId);
-		if (Family is not null)
+		Family? family = null;
+		try
+		{
+			family = await _familyService.GetFamily(FamilyId);
+		}
+		catch { }
+		if (family is not null)
 		{
 			Family = family;
 			var eventsTask = GetEventsAsync();
@@ -32,30 +56,43 @@
 		}
 	}
 
-	private async Task GetEventsAsync()
+	public void ShowCreateFamilyForm()
 	{
-		var events = await _familyEventService.GetByFamilyId(FamilyId);
-		if (events is not null)
+		CreateFamilyFormVisible = true;
+	}
+
+	public void HideCreateFamilyForm()
+	{
+		CreateFamilyFormVisible = false;
+	}
+
+	public async Task GetFamilyFromForm(Family family)
+	{
+		HideCreateFamilyForm();
+		var response = await _familyService.CreateFamily(family);
+		if (response is null)
 		{
-			Events = events.ToList();
+			FamilyCreated = false;
+		}
+		else
+		{
+			Family = family;
+			FamilyCreated = true;
 		}
 	}
 
-	private async Task GetListsAsync()
+	public async Task GetFamily()
 	{
-		var lists = await _familyListService.GetByFamilyId(FamilyId);
-		if (lists is not null)
+		if (!Guid.TryParse(FamilyIdRaw, out var familyId))
 		{
-			Lists = lists.ToList();
+			return;
 		}
-	}
 
-	private async Task GetMembersAsync()
-	{
-		var members = await _familyMemberService.GetByFamilyId(FamilyId);
-		if (members is not null)
+		FamilyId = familyId;
+		var result = await _familyService.GetFamily(FamilyId);
+		if (result is not null)
 		{
-			Members = members.ToList();
+			Family = result;
 		}
 	}
 }

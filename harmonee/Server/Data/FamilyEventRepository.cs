@@ -5,9 +5,9 @@ namespace harmonee.Server.Data
 {
     public class FamilyEventRepository : IFamilyEventRepository
     {
-        private readonly FamilyEventContext _context;
+        private readonly FamilyContext _context;
 
-        public FamilyEventRepository(FamilyEventContext context)
+        public FamilyEventRepository(FamilyContext context)
         {
             _context = context;
         }
@@ -135,23 +135,6 @@ namespace harmonee.Server.Data
                 return true;
             }
             return false;
-        }
-    }
-
-    public class FamilyEventContext : DbContext
-    {
-        private readonly string _connectionString = string.Empty;
-        public DbSet<FamilyEvent> FamilyEvents { get; set; }
-
-        public FamilyEventContext(string connectionString)
-        {
-            _connectionString = connectionString;
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            // Use appropriate server and connection string
-            optionsBuilder.UseSqlServer(_connectionString);
         }
     }
 }

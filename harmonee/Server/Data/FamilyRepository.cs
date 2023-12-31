@@ -16,6 +16,7 @@ namespace harmonee.Server.Data
 
         public Family Add(Family entity)
         {
+            entity.Id = new Guid();
             _context.Families.Add(new FamilyRecord { Id = entity.Id, Name = entity.Name });
             foreach (var familyMemberId in entity.FamilyMemberIds)
             {
@@ -167,26 +168,6 @@ namespace harmonee.Server.Data
             }
 
             return false;
-        }
-    }
-
-    public class FamilyContext : DbContext
-    {
-        public DbSet<FamilyRecord> Families { get; set; }
-        public DbSet<FamilyMember> FamilyMembers { get; set; }
-        public DbSet<FamilyEvent> FamilyEvents { get; set; }
-        public DbSet<FamilyList> FamilyLists { get; set; }
-        private readonly string _connectionString;
-
-        public FamilyContext(string connectionString)
-        {
-            _connectionString = connectionString;
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            // Use appropriate server and connection string
-            optionsBuilder.UseSqlServer(_connectionString);
         }
     }
 }

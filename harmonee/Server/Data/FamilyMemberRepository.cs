@@ -6,9 +6,9 @@ namespace harmonee.Server.Data
 {
     public class FamilyMemberRepository : IFamilyMemberRepository
     {
-        private readonly FamilyMemberContext _context;
+        private readonly FamilyContext _context;
 
-        public FamilyMemberRepository(FamilyMemberContext context)
+        public FamilyMemberRepository(FamilyContext context)
         {
             _context = context;
         }
@@ -108,23 +108,6 @@ namespace harmonee.Server.Data
         public IEnumerable<FamilyMember> GetByUserId(Guid userId)
         {
             return _context.FamilyMembers.Where(f => f.UserId == userId);
-        }
-    }
-
-    public class FamilyMemberContext : DbContext
-    {
-        public DbSet<FamilyMember> FamilyMembers { get; set; }
-        private readonly string _connectionString;
-
-        public FamilyMemberContext(string connectionString)
-        {
-            _connectionString = connectionString;
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            // Use appropriate server and connection string
-            optionsBuilder.UseSqlServer(_connectionString);
         }
     }
 }

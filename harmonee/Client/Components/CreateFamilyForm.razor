@@ -1,0 +1,26 @@
+﻿@using harmonee.Client.Services
+@using harmonee.Shared.Models
+<h3>CreateFamilyForm</h3>
+
+<EditForm Model="@Model" OnSubmit="@Submit" FormName="Family1">
+	<InputText @bind-Value="Model.Name" />
+	<button type="submit">Submit</button>
+</EditForm>
+
+@code {
+	public Family Model;
+
+	[Parameter]
+	public EventCallback<Family> OnFormSubmit { get; set; }
+
+	protected override void OnInitialized() => Model ??= new();
+
+	private void Submit()
+	{
+		Model.Id = new Guid();
+		Model.FamilyMemberIds = new Guid[] { Guid.Parse("01234567-8910-1112-1314-151617181920") };
+		Model.FamilyEventIds = new Guid[0];
+		Model.FamilyListIds = new Guid[0];
+		OnFormSubmit.InvokeAsync(Model);
+	}
+}

@@ -1,6 +1,7 @@
 using harmonee.Server.Data;
 using harmonee.Shared.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace harmonee
 {
@@ -8,25 +9,36 @@ namespace harmonee
     {
         public static void Main(string[] args)
         {
+            const string HarmoneeCorsPolicyName = "HarmoneeCors";
+
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddCors(o =>
+            {
+                o.AddPolicy(name: HarmoneeCorsPolicyName,
+                    policy =>
+                    {
+                        policy.AllowAnyOrigin()
+							  .AllowAnyHeader()
+							  .AllowAnyMethod();
+                    });
+            });
 
             // Add services to the container.
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllers();
+            // builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
 
             var options = new DbContextOptionsBuilder();
-            var familyConnectionString = builder.Configuration.GetConnectionString("Family");
-            builder.Services.AddScoped(_ => new FamilyContext(familyConnectionString));
-            builder.Services.AddScoped(_ => new FamilyMemberContext(familyConnectionString));
-            builder.Services.AddScoped(_ => new FamilyEventContext(familyConnectionString));
-            builder.Services.AddScoped(_ => new FamilyListContext(familyConnectionString));
+            builder.Services.AddDbContext<FamilyContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Family")));
+            //var familyConnectionString = builder.Configuration.GetConnectionString("Family");
+            //builder.Services.AddScoped(_ => new FamilyContext(familyConnectionString));
             builder.Services.AddScoped<IFamilyRepository, FamilyRepository>();
             builder.Services.AddScoped<IFamilyMemberRepository, FamilyMemberRepository>();
             builder.Services.AddScoped<IFamilyEventRepository, FamilyEventRepository>();
             builder.Services.AddScoped<IFamilyListRepository, FamilyListRepository>();
 
             var app = builder.Build();
-
+             
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -39,13 +51,14 @@ namespace harmonee
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
 
             app.UseRouting();
 
+            app.UseCors(HarmoneeCorsPolicyName);
 
             app.MapRazorPages();
             app.MapControllers();

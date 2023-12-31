@@ -2,7 +2,7 @@
 
 namespace harmonee.Client.Services
 {
-	public class FamilyEventService
+	public class FamilyEventService : IFamilyEventService
 	{
 		private readonly IApiClient _client;
 
