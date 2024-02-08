@@ -64,3 +64,16 @@ public class GroupRepository : IRepository<Group>
 		return true;
     }
 }
+
+public interface IGroupRepository
+{
+	public Group? Get(Guid id);
+	public IEnumerable<Group> Get(IEnumerable<Guid> ids);
+	public bool Add(Group group);
+	public bool Remove(Group group);
+	public bool AddMany(IEnumerable<Group> groups);
+	public bool RemoveMany(IEnumerable<Group> groups);
+	public bool Update(Group entity);
+	public bool UpdateMany(IEnumerable<Group> entity);
+
+}
