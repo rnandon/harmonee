@@ -62,3 +62,16 @@ public class GroupListRepository : IRepository<GroupList>
         return true;
     }
 }
+
+public interface IGroupListRepository
+{
+    public GroupList? Get(Guid id);
+    public IEnumerable<GroupList> Get(IEnumerable<Guid> ids);
+    public bool Add(GroupList entity);
+    public bool AddMany(IEnumerable<GroupList> entities);
+    public bool Remove(GroupList entity);
+    public bool RemoveMany(IEnumerable<GroupList> entities);
+    public bool Update(GroupList entity);
+    public bool UpdateMany(IEnumerable<GroupList> entities);
+}
+
