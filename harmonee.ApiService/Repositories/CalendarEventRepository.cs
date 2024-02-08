@@ -11,6 +11,16 @@ public class CalendarEventRepository : IRepository<CalendarEvent>
         _context = context;
     }
 
+    public CalendarEvent? Get(Guid id)
+    {
+        return _context.CalendarEvents.FirstOrDefault(g => g.Id == id);
+    }
+
+    public IEnumerable<CalendarEvent> Get(IEnumerable<Guid> ids)
+    {
+        return _context.CalendarEvents.Where(g => ids.Contains(g.Id));
+    }
+
     public bool Add(CalendarEvent entity)
     {
         _context.CalendarEvents.Add(entity);
