@@ -10,6 +10,16 @@ public class GroupListRepository : IRepository<GroupList>
     {
         _context = context;
     }
+
+    public GroupList? Get(Guid id)
+    {
+        return _context.GroupLists.FirstOrDefault(g => g.Id == id);
+    }
+
+    public IEnumerable<GroupList> Get(IEnumerable<Guid> ids)
+    {
+        return _context.GroupLists.Where(g => ids.Contains(g.Id));
+    }
     public bool Add(GroupList entity)
     {
         _context.GroupLists.Add(entity);
