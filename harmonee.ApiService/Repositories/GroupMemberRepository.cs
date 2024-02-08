@@ -11,6 +11,16 @@ public class GroupMemberRepository : IRepository<GroupMember>
         _context = context;
     }
 
+    public GroupMember? Get(Guid id)
+    {
+        return _context.GroupMembers.FirstOrDefault(g => g.Id == id);
+    }
+
+    public IEnumerable<GroupMember> Get(IEnumerable<Guid> ids)
+    {
+        return _context.GroupMembers.Where(g => ids.Contains(g.Id));
+    }
+
     public bool Add(GroupMember entity)
     {
         _context.GroupMembers.Add(entity);
