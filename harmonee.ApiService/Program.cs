@@ -7,7 +7,10 @@ builder.AddServiceDefaults();
 
 // Add services to the container.
 builder.Services.AddProblemDetails();
-builder.Services.AddDbContext<harmoneeDbContext>();
+builder.Services.AddDbContext<GroupDbContext>();
+builder.Services.AddDbContext<GroupListDbContext>();
+builder.Services.AddDbContext<GroupMemberDbContext>();
+builder.Services.AddDbContext<CalendarEventDbContext>();
 
 var app = builder.Build();
 
