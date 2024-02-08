@@ -63,3 +63,15 @@ public class CalendarEventRepository : IRepository<CalendarEvent>
         return true;
     }
 }
+
+public interface ICalendarEventRepository
+{
+    public CalendarEvent? Get(Guid id);
+    public IEnumerable<CalendarEvent> Get(IEnumerable<Guid> ids);
+    public bool Add(CalendarEvent entity);
+    public bool AddMany(IEnumerable<CalendarEvent> entities);
+    public bool Remove(CalendarEvent entity);
+    public bool RemoveMany(IEnumerable<CalendarEvent> entities);
+    public bool Update(CalendarEvent entity);
+    public bool UpdateMany(IEnumerable<CalendarEvent> entities);
+}
