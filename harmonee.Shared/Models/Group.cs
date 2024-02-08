@@ -13,4 +13,9 @@ public class Group
     public List<Guid> Members { get; set; } = new();
     public List<Guid> Calendar { get; set; } = new();
     public List<Guid> Lists { get; set; } = new();
+
+    public bool IsValid()
+    {
+        return Name.Length > 3;
+    }
 }
