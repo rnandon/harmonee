@@ -2,6 +2,7 @@
 
 public class GroupList
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
+    public Guid GroupId { get; set; }
     public ListItem[] Items { get; set; }
 }
