@@ -8,7 +8,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Harmonee.UI.Client\Harmonee.UI.Client.csproj" />
+    <PackageReference Include="Auth0.AspNetCore.Authentication" Version="1.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Owin.Security.Cookies" Version="4.2.2" />
+    <PackageReference Include="Microsoft.Owin.Security.OpenIdConnect" Version="4.2.2" />
   </ItemGroup>
 
 </Project>
