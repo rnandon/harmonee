@@ -3,13 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34607.79
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Harmonee.UI", "Harmonee.UI\Harmonee.UI\Harmonee.UI.csproj", "{FCCE2E54-B59C-424A-9DEC-9E16A2FE64E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Harmonee.Shared", "Harmonee.Shared\Harmonee.Shared.csproj", "{5E0E41A4-0116-4432-9DD7-D671A50F1315}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Harmonee.UI.Client", "Harmonee.UI\Harmonee.UI.Client\Harmonee.UI.Client.csproj", "{6DF92033-3366-48EF-B85F-E07D6E231F41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Harmonee.API", "Harmonee.API\Harmonee.API.csproj", "{8F3963B9-EF51-458F-805A-E24107016E95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Harmonee.Shared", "Harmonee.Shared\Harmonee.Shared.csproj", "{5E0E41A4-0116-4432-9DD7-D671A50F1315}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Harmonee.API", "Harmonee.API\Harmonee.API.csproj", "{8F3963B9-EF51-458F-805A-E24107016E95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Harmonee.UI", "Harmonee.BlazorServerUI\Harmonee.UI.csproj", "{C3382A73-B6C6-4685-BA0E-7D868612CF61}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,14 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FCCE2E54-B59C-424A-9DEC-9E16A2FE64E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FCCE2E54-B59C-424A-9DEC-9E16A2FE64E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FCCE2E54-B59C-424A-9DEC-9E16A2FE64E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FCCE2E54-B59C-424A-9DEC-9E16A2FE64E4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6DF92033-3366-48EF-B85F-E07D6E231F41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6DF92033-3366-48EF-B85F-E07D6E231F41}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6DF92033-3366-48EF-B85F-E07D6E231F41}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6DF92033-3366-48EF-B85F-E07D6E231F41}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5E0E41A4-0116-4432-9DD7-D671A50F1315}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5E0E41A4-0116-4432-9DD7-D671A50F1315}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5E0E41A4-0116-4432-9DD7-D671A50F1315}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,6 +23,10 @@ Global
 		{8F3963B9-EF51-458F-805A-E24107016E95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F3963B9-EF51-458F-805A-E24107016E95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F3963B9-EF51-458F-805A-E24107016E95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3382A73-B6C6-4685-BA0E-7D868612CF61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3382A73-B6C6-4685-BA0E-7D868612CF61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3382A73-B6C6-4685-BA0E-7D868612CF61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3382A73-B6C6-4685-BA0E-7D868612CF61}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
