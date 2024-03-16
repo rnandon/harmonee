@@ -1,4 +1,6 @@
-﻿namespace Harmonee.Shared.Models;
+﻿using Harmonee.Shared.Utilities;
+
+namespace Harmonee.Shared.Models;
 
 public class GroupMember
 {
@@ -6,4 +8,5 @@ public class GroupMember
     public string Name { get; set; }
     public Guid GroupId { get; set; }
     public Guid UserId { get; set; }
+    public PermissionTypes PermissionType { get; set; }
 }
